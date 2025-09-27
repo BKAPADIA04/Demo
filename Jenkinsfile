@@ -4,6 +4,8 @@ pipeline {
     environment {
         IMAGE_NAME = "bkapadia04/calculator"
         IMAGE_TAG  = "latest"
+        // Ensure Docker path is included
+        PATH = "/usr/local/bin:$PATH"
     }
 
     stages {
@@ -13,23 +15,34 @@ pipeline {
             }
         }
 
+        stage('Check Docker') {
+            steps {
+                sh '''
+                    if ! command -v docker &> /dev/null
+                    then
+                        echo "❌ Docker CLI not found. Please install Docker."
+                        exit 1
+                    fi
+                    docker --version
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-               sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials',
-                                                     usernameVariable: 'DOCKER_USER',
-                                                     passwordVariable: 'DOCKER_PASS')]) {
-                        sh """
-                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                            docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                        """
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials',
+                                                 usernameVariable: 'DOCKER_USER',
+                                                 passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
                 }
             }
         }
