@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo 'Checking Docker version...'
                 sh '''
-                docker --version
+                    docker --version
                 '''
             }
         }
