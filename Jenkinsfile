@@ -4,8 +4,6 @@ pipeline {
     environment {
         IMAGE_NAME = "bkapadia04/calculator"
         IMAGE_TAG  = "latest"
-        // Ensure Docker path is included
-//         PATH = "/usr/local/bin:$PATH"
     }
 
     stages {
