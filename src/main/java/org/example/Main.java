@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
-        int num1 = 10;
+        int num1 = 130;
         int num2 = 20;
 
         int sum = addNumbers(num1, num2);
