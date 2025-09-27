@@ -41,4 +41,12 @@ pipeline {
             }
         }
     }
+    post {
+            success {
+                echo "✅ Pipeline completed successfully! Image pushed to Docker Hub: ${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+            failure {
+                echo "❌ Pipeline failed! Please check the logs."
+            }
+        }
 }
