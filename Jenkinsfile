@@ -12,6 +12,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/BKAPADIA04/Demo.git'
             }
         }
+        stage('Run tests') {
+             steps {
+               sh 'mvn test'
+            }
+        }
 
         stage('Check Docker') {
             steps {
